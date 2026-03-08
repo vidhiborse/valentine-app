@@ -25,6 +25,95 @@ function buildCSS(t){
     --orb1:${t.orb1};--orb2:${t.orb2};
     --glow:${t.glow};
   }
+  /* Light mode overrides */
+  body.light-mode{
+    --surface:rgba(255,255,255,0.92);
+    --surface2:rgba(255,255,255,0.75);
+    --border:rgba(0,0,0,0.1);
+    --text:rgba(20,10,30,0.88);
+    --text2:rgba(20,10,30,0.5);
+    --input-bg:rgba(0,0,0,0.04);
+    --input-border:rgba(0,0,0,0.14);
+  }
+  body.light-mode .glass-deep{background:rgba(255,255,255,0.88)!important;border-color:rgba(200,150,200,0.25)!important;box-shadow:0 8px 40px rgba(180,100,180,0.12)!important;}
+  body.light-mode .glass{background:rgba(255,255,255,0.75)!important;border-color:rgba(200,150,200,0.2)!important;}
+  body.light-mode .glass-card{background:rgba(255,255,255,0.7)!important;border-color:rgba(200,150,200,0.18)!important;}
+  body.light-mode .glass-rose{background:rgba(255,220,235,0.55)!important;border-color:rgba(255,107,157,0.3)!important;}
+  body.light-mode .glass-gold{background:rgba(255,245,210,0.65)!important;border-color:rgba(200,160,0,0.25)!important;}
+  body.light-mode .glass-letter{background:rgba(255,250,230,0.85)!important;border-color:rgba(200,160,0,0.22)!important;}
+  body.light-mode .rom-input{background:rgba(0,0,0,0.045)!important;border-color:rgba(0,0,0,0.12)!important;color:rgba(20,10,30,0.88)!important;}
+  body.light-mode .rom-input::placeholder{color:rgba(20,10,30,0.28)!important;}
+  body.light-mode .rom-input:focus{border-color:rgba(255,77,141,0.55)!important;}
+  body.light-mode select{background:rgba(0,0,0,0.04)!important;color:rgba(20,10,30,0.88)!important;}
+
+  /* ── Light mode: ALL text turns dark automatically ── */
+  body.light-mode *{color:rgba(20,10,30,0.82);}
+
+  /* Exceptions — gradient text and buttons keep their colour */
+  body.light-mode span[style*="WebkitTextFillColor"]{color:transparent!important;}
+  body.light-mode .pill-yes,
+  body.light-mode .pill-no{color:#fff!important;}
+
+  /* Subtle text levels */
+  body.light-mode p[style*="0.27"],
+  body.light-mode p[style*="0.28"],
+  body.light-mode p[style*="0.26"],
+  body.light-mode p[style*="0.32"],
+  body.light-mode p[style*="0.38"],
+  body.light-mode p[style*="0.40"],
+  body.light-mode p[style*="0.4)"],
+  body.light-mode p[style*="0.35"],
+  body.light-mode p[style*="0.3)"],
+  body.light-mode p[style*="0.2)"]{color:rgba(20,10,30,0.48)!important;}
+
+  body.light-mode p[style*="0.5)"],
+  body.light-mode p[style*="0.55"],
+  body.light-mode p[style*="0.58"],
+  body.light-mode p[style*="0.6)"],
+  body.light-mode p[style*="0.65"],
+  body.light-mode p[style*="0.7)"],
+  body.light-mode p[style*="0.72"],
+  body.light-mode p[style*="0.75"],
+  body.light-mode p[style*="0.76"]{color:rgba(20,10,30,0.72)!important;}
+
+  /* Labels */
+  body.light-mode label{color:rgba(20,10,30,0.58)!important;}
+
+  /* Step name + counter in progress bar */
+  body.light-mode .progress-label{color:rgba(20,10,30,0.5)!important;}
+
+  /* Gold accent text stays readable */
+  body.light-mode p[style*="ffd700"],
+  body.light-mode span[style*="ffd700"]{color:#8a6800!important;}
+
+  /* Pink accent text stays readable */
+  body.light-mode p[style*="ffb3c8"],
+  body.light-mode span[style*="ffb3c8"],
+  body.light-mode strong[style*="ffb3c8"]{color:#c0005a!important;}
+
+  /* Pink subtle text */
+  body.light-mode p[style*="ff6b9d"],
+  body.light-mode span[style*="ff6b9d"]{color:#c0005a!important;}
+
+  /* Ghost buttons in light mode */
+  body.light-mode button:not(.pill-yes):not(.pill-no):not(.theme-toggle-btn){color:rgba(20,10,30,0.65)!important;border-color:rgba(0,0,0,0.15)!important;background:rgba(0,0,0,0.05)!important;}
+  body.light-mode button:not(.pill-yes):not(.pill-no):not(.theme-toggle-btn):hover{background:rgba(0,0,0,0.09)!important;}
+  /* Toggle button keeps its own style always */
+  .theme-toggle-btn{all:unset;cursor:pointer;}
+
+  /* Headings */
+  body.light-mode h1,body.light-mode h2{color:rgba(20,10,30,0.88)!important;}
+
+  /* Divider lines */
+  body.light-mode div[style*="rgba(255,255,255,0.07)"]{background:rgba(0,0,0,0.07)!important;}
+
+  /* Background body in light mode */
+  body.light-mode{background:#f0eaf8!important;}
+
+  /* Scrollbar in light */
+  body.light-mode ::-webkit-scrollbar-thumb{background:rgba(180,100,180,0.3);}
+
+  @keyframes toggleSlide{from{transform:translateX(0);}to{transform:translateX(22px);}}
   body{font-family:'DM Sans',sans-serif;background:var(--bg1);color:#fff;min-height:100vh;overflow-x:hidden;}
   *{cursor:inherit;}
   button,a{cursor:pointer;}
@@ -163,11 +252,44 @@ const GT={fontFamily:"'Cormorant Garamond',serif",fontWeight:700,background:"lin
 function GradText({children,style={}}){return <span style={{...GT,...style}}>{children}</span>;}
 const IB={width:"100%",display:"block",background:"rgba(255,255,255,0.055)",border:"1px solid rgba(255,255,255,0.12)",borderRadius:"14px",color:"#fff",padding:"0.8rem 1rem",fontSize:"0.94rem",transition:"border 0.25s,box-shadow 0.25s"};
 const LB={color:"rgba(255,210,238,0.72)",fontSize:"0.75rem",display:"block",marginBottom:"0.38rem",fontWeight:500,letterSpacing:"0.03em"};
+// Light-aware text helper
+function lc(light,dark="rgba(255,255,255,0.65)"){return document.body.classList.contains("light-mode")?light:dark;}
 function PBtn({children,onClick,style={},disabled=false}){
   return(<button onClick={onClick} disabled={disabled} className="pill-yes" style={{padding:"0.9rem 2.1rem",fontSize:"0.97rem",opacity:disabled?0.5:1,animation:disabled?"none":"glow 2.5s ease infinite",...style,cursor:disabled?"not-allowed":"pointer"}}>{children}</button>);
 }
 function GBtn({children,onClick,style={}}){
   return(<button onClick={onClick} style={{background:"rgba(255,255,255,0.045)",border:"1px solid rgba(255,255,255,0.14)",color:"rgba(255,255,255,0.58)",borderRadius:"50px",fontSize:"0.86rem",fontWeight:500,padding:"0.72rem 1.3rem",transition:"all 0.25s ease",...style}}>{children}</button>);
+}
+
+/* ── Light/Dark Toggle ── */
+function ThemeToggle({light,setLight}){
+  function toggle(){
+    const next=!light;
+    setLight(next);
+    document.body.classList.toggle("light-mode",next);
+  }
+  return(
+    <button onClick={toggle} className="theme-toggle-btn" title={light?"Switch to Dark":"Switch to Light"}
+      style={{position:"fixed",top:"1rem",right:"1rem",zIndex:9999,
+        background:light?"rgba(255,255,255,0.95)":"rgba(20,5,40,0.82)",
+        border:`1.5px solid ${light?"rgba(180,100,180,0.25)":"rgba(255,107,157,0.35)"}`,
+        borderRadius:"50px",padding:"0.4rem 0.8rem",display:"flex",alignItems:"center",
+        gap:"0.5rem",cursor:"pointer!important",backdropFilter:"blur(16px)",
+        boxShadow:light?"0 2px 16px rgba(0,0,0,0.1),0 0 0 1px rgba(180,100,180,0.12)":"0 2px 16px rgba(255,107,157,0.2)",
+        transition:"all 0.3s ease",
+        // Override light mode button rule for this specific button
+        color:`${light?"rgba(20,10,30,0.8)":"rgba(255,255,255,0.85)"}!important`,
+        backgroundColor:`${light?"rgba(255,255,255,0.95)":"rgba(20,5,40,0.82)"}!important`,
+      }}>
+      {/* Track */}
+      <div style={{width:"36px",height:"20px",borderRadius:"20px",background:light?"linear-gradient(135deg,#ffd700,#ff6b9d)":"linear-gradient(135deg,#1a0030,#3a0060)",border:`1px solid ${light?"rgba(255,150,0,0.3)":"rgba(255,107,157,0.3)"}`,position:"relative",transition:"all 0.3s ease",flexShrink:0}}>
+        {/* Thumb */}
+        <div style={{position:"absolute",top:"2px",left:light?"18px":"2px",width:"14px",height:"14px",borderRadius:"50%",background:light?"#fff":"linear-gradient(135deg,#ff6b9d,#c084fc)",boxShadow:"0 1px 4px rgba(0,0,0,0.3)",transition:"left 0.3s cubic-bezier(0.34,1.56,0.64,1)"}}/>
+      </div>
+      <span style={{fontSize:"0.85rem"}}>{light?"☀️":"🌙"}</span>
+      <span style={{fontSize:"0.72rem",fontWeight:600,color:light?"rgba(20,10,30,0.75)":"rgba(255,255,255,0.7)",letterSpacing:"0.02em",userSelect:"none"}}>{light?"Light":"Dark"}</span>
+    </button>
+  );
 }
 function Field({label,value,onChange,placeholder,small}){
   return(<div style={{marginBottom:"1rem"}}>{label&&<label style={LB}>{label}</label>}<input className="rom-input" value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={{...IB,...(small?{fontSize:"0.85rem",padding:"0.65rem 0.9rem"}:{})}}/></div>);
@@ -253,63 +375,86 @@ function SetupWizard({onComplete}){
   const stepNames=["Names & Theme","Memory 1","Memory 2","Memory 3","Memory 4","Memory 5","Memory 6","Reasons & Song","Love Pledges","Quiz & Gallery","Scratch Card","Love Letter & Future","Proposal & Celebration"];
 
 
+  const [lightMode,setLightMode]=useState(false);
+
   return(
     <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"2rem 1.2rem",position:"relative",zIndex:1}}>
-      <div style={{width:"100%",maxWidth:"520px",marginBottom:"1.4rem",zIndex:2}}>
+      <ThemeToggle light={lightMode} setLight={setLightMode}/>
+      <div style={{width:"100%",maxWidth:"860px",marginBottom:"1.2rem",zIndex:2}}>
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:"0.38rem"}}>
-          <p style={{color:"rgba(255,255,255,0.32)",fontSize:"0.7rem"}}>{stepNames[ws]||""}</p>
-          <p style={{color:"rgba(255,255,255,0.18)",fontSize:"0.67rem"}}>{ws+1}/{TOTAL+1}</p>
+          <p style={{color:lightMode?"rgba(20,10,30,0.45)":"rgba(255,255,255,0.32)",fontSize:"0.7rem"}}>{stepNames[ws]||""}</p>
+          <p style={{color:lightMode?"rgba(20,10,30,0.3)":"rgba(255,255,255,0.18)",fontSize:"0.67rem"}}>{ws+1}/{TOTAL+1}</p>
         </div>
-        <div style={{height:"2px",background:"rgba(255,255,255,0.07)",borderRadius:"2px"}}>
+        <div style={{height:"2px",background:lightMode?"rgba(0,0,0,0.08)":"rgba(255,255,255,0.07)",borderRadius:"2px"}}>
           <div style={{height:"100%",background:"linear-gradient(90deg,#ff6b9d,#c084fc,#ffd700)",width:`${pct}%`,transition:"width 0.5s ease",borderRadius:"2px",boxShadow:"0 0 8px rgba(255,107,157,0.5)"}}/>
         </div>
       </div>
 
-      <div className="glass-deep wpad" style={{width:"100%",maxWidth:"520px",padding:"2.2rem 1.9rem",zIndex:2}}>
+      <div className="glass-deep wpad" style={{width:"100%",maxWidth:"860px",padding:"2.2rem 2.2rem",zIndex:2}}>
 
-        {/* Step 0 — Names + Theme */}
+        {/* Step 0 — Names + Theme — 2-col on desktop */}
         {ws===0&&(
           <div style={{animation:"scaleIn 0.4s ease"}}>
-            <div style={{textAlign:"center",marginBottom:"1.8rem"}}>
+            <div style={{textAlign:"center",marginBottom:"1.6rem"}}>
               <div style={{width:"52px",height:"52px",borderRadius:"50%",background:"linear-gradient(135deg,rgba(255,107,157,0.25),rgba(168,85,247,0.2))",border:"1px solid rgba(255,107,157,0.3)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 0.9rem",fontSize:"1.3rem"}}>+</div>
-              <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,5vw,1.85rem)",fontWeight:700}}><GradText>Create Your Proposal</GradText></h1>
+              <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,5vw,1.85rem)",fontWeight:700,color:lightMode?"rgba(20,10,30,0.88)":"inherit"}}><GradText>Create Your Proposal</GradText></h1>
             </div>
-            <Field label="Your Name" value={yourName} onChange={setYN} placeholder="e.g. Rohan"/>
-            <Field label="Your Partner's Name" value={friendName} onChange={setFN} placeholder="e.g. Priya"/>
-            <Field label="Couple Nickname (optional)" value={nickname} onChange={setNick} placeholder="e.g. Ro & Priya, Team Forever…"/>
-            <Field label="A Special Date (optional)" value={coupleDate} onChange={setCD} placeholder="e.g. 14th February 2025"/>
-            <label style={LB}>Colour Theme</label>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:"0.5rem",marginBottom:"1rem"}}>
-              {Object.entries(THEMES).map(([k,v])=>(
-                <button key={k} onClick={()=>setTheme(k)} className={`theme-btn${theme===k?" active":""}`}>
-                  <div style={{display:"flex",gap:"3px",justifyContent:"center",marginBottom:"4px"}}>
-                    {[v.p1,v.p2,v.a1].map((c,i)=><div key={i} style={{width:"10px",height:"10px",borderRadius:"50%",background:c}}/>)}
+            {/* 2-col grid on desktop */}
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"1.5rem"}}>
+              {/* Left — names */}
+              <div>
+                <Field label="Your Name" value={yourName} onChange={setYN} placeholder="e.g. Rohan"/>
+                <Field label="Your Partner's Name" value={friendName} onChange={setFN} placeholder="e.g. Priya"/>
+                <Field label="Couple Nickname (optional)" value={nickname} onChange={setNick} placeholder="e.g. Ro & Priya, Team Forever…"/>
+                <Field label="A Special Date (optional)" value={coupleDate} onChange={setCD} placeholder="e.g. 14th February 2025"/>
+              </div>
+              {/* Right — theme */}
+              <div>
+                <label style={{...LB,color:lightMode?"rgba(20,10,30,0.55)":undefined}}>Colour Theme</label>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:"0.5rem",marginBottom:"1rem"}}>
+                  {Object.entries(THEMES).map(([k,v])=>(
+                    <button key={k} onClick={()=>setTheme(k)} className={`theme-btn${theme===k?" active":""}`} style={{borderColor:lightMode&&theme!==k?"rgba(0,0,0,0.1)":undefined}}>
+                      <div style={{display:"flex",gap:"3px",justifyContent:"center",marginBottom:"4px"}}>
+                        {[v.p1,v.p2,v.a1].map((c,i)=><div key={i} style={{width:"10px",height:"10px",borderRadius:"50%",background:c}}/>)}
+                      </div>
+                      <p style={{color:lightMode?"rgba(20,10,30,0.6)":"rgba(255,255,255,0.6)",fontSize:"0.6rem",lineHeight:1.2}}>{v.name}</p>
+                    </button>
+                  ))}
+                </div>
+                {/* Theme preview swatch */}
+                <div style={{borderRadius:"14px",overflow:"hidden",border:"1px solid rgba(255,255,255,0.1)",marginTop:"0.5rem"}}>
+                  <div style={{height:"48px",background:`linear-gradient(135deg,${THEMES[theme].p1},${THEMES[theme].p2},${THEMES[theme].p3})`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <span style={{color:"#fff",fontSize:"0.75rem",fontWeight:600,letterSpacing:"0.04em"}}>{THEMES[theme].name}</span>
                   </div>
-                  <p style={{color:"rgba(255,255,255,0.6)",fontSize:"0.6rem",lineHeight:1.2}}>{v.name}</p>
-                </button>
-              ))}
+                </div>
+              </div>
             </div>
-            {err&&<p style={{color:"#fb7185",fontSize:"0.77rem",textAlign:"center",marginTop:"0.3rem"}}>{err}</p>}
-            <PBtn onClick={next} style={{width:"100%",marginTop:"1.2rem",padding:"0.98rem",fontSize:"1rem"}}>Let's build something magical</PBtn>
+            {err&&<p style={{color:"#fb7185",fontSize:"0.77rem",textAlign:"center",marginTop:"0.5rem"}}>{err}</p>}
+            <PBtn onClick={next} style={{width:"100%",marginTop:"1.4rem",padding:"0.98rem",fontSize:"1rem"}}>Let's build something magical</PBtn>
           </div>
         )}
 
 
-        {/* Steps 2–7 — Memories */}
+        {/* Memory Steps — 2-col on desktop */}
         {ws>=1&&ws<=6&&(()=>{
           const mi=ws-1,m=mems[mi];
           return(
             <div style={{animation:"fadeUp 0.38s ease"}} key={m.key}>
               <div style={{textAlign:"center",marginBottom:"1.2rem"}}>
                 <span style={{fontSize:"2rem"}}>{m.emoji}</span>
-                <p style={{color:"rgba(255,255,255,0.26)",fontSize:"0.73rem",marginTop:"0.28rem"}}>Memory {ws} of 6</p>
+                <p style={{color:lightMode?"rgba(20,10,30,0.45)":"rgba(255,255,255,0.26)",fontSize:"0.73rem",marginTop:"0.28rem"}}>Memory {ws} of 6</p>
               </div>
-              <Field label="Memory Title" value={m.title} onChange={v=>uMem(mi,"title",v)} placeholder="e.g. We first met"/>
-              <ImgUp value={m.img} onChange={v=>uMem(mi,"img",v)} hint={m.imgHint}/>
-              <div style={{marginTop:"0.8rem"}}>
-                <TArea label="Personal note" value={m.userNote} onChange={v=>uMem(mi,"userNote",v)} placeholder={m.note} rows={2}/>
+              {/* 2-col: photo | fields */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:"1.4rem"}}>
+                <div>
+                  <ImgUp value={m.img} onChange={v=>uMem(mi,"img",v)} hint={m.imgHint} height="clamp(180px,35vw,280px)"/>
+                </div>
+                <div>
+                  <Field label="Memory Title" value={m.title} onChange={v=>uMem(mi,"title",v)} placeholder="e.g. We first met"/>
+                  <TArea label="Personal note" value={m.userNote} onChange={v=>uMem(mi,"userNote",v)} placeholder={m.note} rows={5}/>
+                </div>
               </div>
-              <div style={{display:"flex",gap:"0.6rem",marginTop:"0.25rem"}}>
+              <div style={{display:"flex",gap:"0.6rem",marginTop:"1rem"}}>
                 <GBtn onClick={back}>Back</GBtn>
                 <PBtn onClick={next} style={{flex:1}}>{ws===6?"Almost there!":"Next"}</PBtn>
               </div>
@@ -372,20 +517,48 @@ function SetupWizard({onComplete}){
           <div style={{animation:"fadeUp 0.38s ease"}}>
             <div style={{textAlign:"center",marginBottom:"1.2rem"}}>
               <h2 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.3rem,5vw,1.5rem)",fontWeight:700}}><GradText>Quiz & Gallery</GradText></h2>
+              <p style={{color:"rgba(255,255,255,0.27)",fontSize:"0.73rem",marginTop:"0.25rem"}}>{quizQs.length} question{quizQs.length!==1?"s":""} · tap pink dot = correct answer</p>
             </div>
-            {quizQs.map((q,qi)=>(
-              <div key={qi} className="glass-card" style={{padding:"0.9rem 0.95rem",marginBottom:"0.8rem"}}>
-                <input className="rom-input" value={q.q} onChange={e=>{const a=[...quizQs];a[qi]={...a[qi],q:e.target.value};setQuiz(a);}} style={{...IB,marginBottom:"0.55rem",fontSize:"0.84rem",padding:"0.58rem 0.82rem"}} placeholder={`Question ${qi+1}`}/>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.4rem"}}>
-                  {q.opts.map((o,oi)=>(
-                    <div key={oi} style={{display:"flex",gap:"0.3rem",alignItems:"center"}}>
-                      <button onClick={()=>{const a=[...quizQs];a[qi]={...a[qi],ans:oi};setQuiz(a);}} style={{flexShrink:0,width:"16px",height:"16px",borderRadius:"50%",background:q.ans===oi?"linear-gradient(135deg,#ff6b9d,#c084fc)":"rgba(255,255,255,0.09)",border:`1px solid ${q.ans===oi?"rgba(255,107,157,0.7)":"rgba(255,255,255,0.18)"}`}}/>
-                      <input className="rom-input" value={o} onChange={e=>{const a=[...quizQs];const opts=[...a[qi].opts];opts[oi]=e.target.value;a[qi]={...a[qi],opts};setQuiz(a);}} style={{...IB,flex:1,fontSize:"0.79rem",padding:"0.42rem 0.65rem"}} placeholder={`Option ${oi+1}`}/>
-                    </div>
-                  ))}
+
+            {/* Questions list */}
+            <div style={{maxHeight:"420px",overflowY:"auto",paddingRight:"2px",marginBottom:"0.7rem"}}>
+              {quizQs.map((q,qi)=>(
+                <div key={qi} className="glass-card" style={{padding:"0.9rem 0.95rem",marginBottom:"0.7rem",position:"relative"}}>
+                  {/* Question header row */}
+                  <div style={{display:"flex",gap:"0.5rem",alignItems:"center",marginBottom:"0.55rem"}}>
+                    <div style={{flexShrink:0,width:"22px",height:"22px",borderRadius:"50%",background:"linear-gradient(135deg,rgba(255,107,157,0.25),rgba(168,85,247,0.2))",border:"1px solid rgba(255,107,157,0.3)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.65rem",color:"rgba(255,107,157,0.9)",fontWeight:700}}>Q{qi+1}</div>
+                    <input className="rom-input" value={q.q} onChange={e=>{const a=[...quizQs];a[qi]={...a[qi],q:e.target.value};setQuiz(a);}} style={{...IB,flex:1,fontSize:"0.84rem",padding:"0.5rem 0.75rem",marginBottom:0}} placeholder={`Question ${qi+1}…`}/>
+                    {/* Delete question button — only if more than 1 */}
+                    {quizQs.length>1&&(
+                      <button onClick={()=>setQuiz(p=>p.filter((_,j)=>j!==qi))} style={{flexShrink:0,width:"26px",height:"26px",borderRadius:"8px",background:"rgba(255,80,80,0.13)",border:"1px solid rgba(255,80,80,0.22)",color:"rgba(255,160,160,0.85)",fontSize:"0.75rem",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+                    )}
+                  </div>
+
+                  {/* Options grid */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.4rem",marginBottom:"0.45rem"}}>
+                    {q.opts.map((o,oi)=>(
+                      <div key={oi} style={{display:"flex",gap:"0.3rem",alignItems:"center"}}>
+                        <button onClick={()=>{const a=[...quizQs];a[qi]={...a[qi],ans:oi};setQuiz(a);}} title="Mark as correct" style={{flexShrink:0,width:"16px",height:"16px",borderRadius:"50%",background:q.ans===oi?"linear-gradient(135deg,#ff6b9d,#c084fc)":"rgba(255,255,255,0.09)",border:`1px solid ${q.ans===oi?"rgba(255,107,157,0.7)":"rgba(255,255,255,0.18)"}`}}/>
+                        <input className="rom-input" value={o} onChange={e=>{const a=[...quizQs];const opts=[...a[qi].opts];opts[oi]=e.target.value;a[qi]={...a[qi],opts};setQuiz(a);}} style={{...IB,flex:1,fontSize:"0.79rem",padding:"0.4rem 0.6rem"}} placeholder={`Option ${oi+1}`}/>
+                      </div>
+                    ))}
+                  </div>
+                  <p style={{color:"rgba(255,107,157,0.4)",fontSize:"0.63rem"}}>● = correct answer</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Add question button */}
+            {quizQs.length<8&&(
+              <GBtn onClick={()=>setQuiz(p=>[...p,{q:"",opts:["","","",""],ans:0}])} style={{width:"100%",marginBottom:"0.9rem",fontSize:"0.82rem",padding:"0.55rem 1rem",border:"1px dashed rgba(255,107,157,0.3)",background:"rgba(255,107,157,0.05)"}}>
+                + Add Question
+              </GBtn>
+            )}
+            {quizQs.length>=8&&(
+              <p style={{color:"rgba(255,255,255,0.2)",fontSize:"0.72rem",textAlign:"center",marginBottom:"0.9rem"}}>Maximum 8 questions reached</p>
+            )}
+
+            {/* Gallery */}
             <div style={{borderTop:"1px solid rgba(255,255,255,0.07)",paddingTop:"0.85rem"}}>
               <label style={LB}>Photo Gallery (up to 4)</label>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem",marginBottom:"0.7rem"}}>
@@ -395,6 +568,7 @@ function SetupWizard({onComplete}){
               </div>
               <Field label="Gallery caption" value={galleryCaption} onChange={setGCaption} placeholder="Our favourite moments…" small/>
             </div>
+
             <div style={{display:"flex",gap:"0.6rem"}}>
               <GBtn onClick={back}>Back</GBtn>
               <PBtn onClick={next} style={{flex:1}}>Next</PBtn>
@@ -470,7 +644,9 @@ function SetupWizard({onComplete}){
 function ShareScreen({data,encoded}){
   const [copied,setCopied]=useState(false);
   const url=`${window.location.origin}${window.location.pathname}#${encoded}`;
-  const shortDisplay=url.length>60?url.slice(0,38)+"…"+url.slice(-18):url;
+  const domain=window.location.origin.replace("https://","").replace("http://","");
+  const hashPreview=encoded?encoded.slice(0,18)+"…["+encoded.length+" chars]":"";
+  const shortDisplay=`${domain}/#${hashPreview}`;
 
   function copyLink(){
     try{navigator.clipboard.writeText(url);}catch(e){
@@ -491,24 +667,31 @@ function ShareScreen({data,encoded}){
 
   return(
     <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"2rem 1.2rem",position:"relative",zIndex:1}}>
-      <div className="glass-deep wpad" style={{width:"100%",maxWidth:"500px",padding:"2.2rem 1.9rem",zIndex:2,textAlign:"center"}}>
+      <ThemeToggle light={false} setLight={()=>{}}/>
+      <div className="glass-deep wpad" style={{width:"100%",maxWidth:"640px",padding:"2.4rem 2.2rem",zIndex:2,textAlign:"center"}}>
         <div style={{width:"56px",height:"56px",borderRadius:"50%",background:"linear-gradient(135deg,rgba(255,107,157,0.25),rgba(168,85,247,0.2))",border:"1px solid rgba(255,107,157,0.3)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 1rem",fontSize:"1.4rem"}}>✓</div>
         <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,5vw,1.9rem)",fontWeight:700}}><GradText>Proposal Ready!</GradText></h1>
         <p style={{color:"rgba(255,255,255,0.38)",fontSize:"0.84rem",marginTop:"0.45rem",lineHeight:1.75}}>Send this to <strong style={{color:"#ffb3c8"}}>{data.friendName}</strong> — the full experience plays instantly.</p>
         {data.nickname&&<p style={{color:"rgba(255,215,0,0.5)",fontSize:"0.78rem",marginTop:"0.3rem",fontStyle:"italic"}}>"{data.nickname}"</p>}
 
         {/* Shortened display + copy */}
-        <div className="glass-rose" style={{padding:"1rem 1.15rem",marginTop:"1.7rem",textAlign:"left"}}>
-          <p style={{color:"rgba(255,200,230,0.5)",fontSize:"0.67rem",marginBottom:"0.55rem",letterSpacing:"0.04em"}}>SHAREABLE LINK</p>
-          {/* Display only — shows short version */}
-          <div className="glass" style={{padding:"0.6rem 0.85rem",marginBottom:"0.65rem",borderRadius:"12px"}}>
-            <p style={{color:"rgba(255,255,255,0.45)",fontSize:"0.7rem",fontFamily:"monospace",wordBreak:"break-all",lineHeight:1.6}}>{shortDisplay}</p>
+        <div className="glass-rose" style={{padding:"1.2rem 1.3rem",marginTop:"1.5rem",textAlign:"left"}}>
+          <p style={{color:"rgba(255,200,230,0.5)",fontSize:"0.67rem",marginBottom:"0.7rem",letterSpacing:"0.06em",fontWeight:600}}>SHAREABLE LINK</p>
+          {/* Clean short display — 1 line, no paragraph */}
+          <div style={{background:"rgba(0,0,0,0.25)",border:"1px solid rgba(255,107,157,0.2)",borderRadius:"10px",padding:"0.6rem 0.9rem",marginBottom:"0.75rem",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"0.5rem",overflow:"hidden"}}>
+            <span style={{color:"rgba(255,255,255,0.5)",fontSize:"0.72rem",fontFamily:"monospace",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1}}>{shortDisplay}</span>
+            <span style={{flexShrink:0,background:"rgba(255,107,157,0.15)",border:"1px solid rgba(255,107,157,0.25)",borderRadius:"6px",padding:"0.18rem 0.5rem",fontSize:"0.62rem",color:"rgba(255,107,157,0.7)",fontWeight:600,whiteSpace:"nowrap"}}>{encoded?Math.round(encoded.length/1024*10)/10+"kb":""}  </span>
           </div>
-          {/* Copy full URL button */}
-          <PBtn onClick={copyLink} style={{width:"100%",padding:"0.72rem",fontSize:"0.88rem",animation:"none",boxShadow:"none"}}>
-            {copied?"✓ Link Copied!":"📋 Copy Full Link"}
-          </PBtn>
-          <p style={{color:"rgba(255,255,255,0.2)",fontSize:"0.68rem",marginTop:"0.5rem",textAlign:"center"}}>Paste this link in WhatsApp / Instagram to share</p>
+          {/* 2-button row */}
+          <div style={{display:"flex",gap:"0.6rem"}}>
+            <PBtn onClick={copyLink} style={{flex:1,padding:"0.72rem",fontSize:"0.88rem",animation:"none",boxShadow:"none"}}>
+              {copied?"✓ Copied!":"📋 Copy Link"}
+            </PBtn>
+            <PBtn onClick={openPreview} style={{flex:1,padding:"0.72rem",fontSize:"0.88rem",animation:"none",background:"linear-gradient(135deg,#6b21a8,#7c3aed)",boxShadow:"none"}}>
+              👁 Preview
+            </PBtn>
+          </div>
+          <p style={{color:"rgba(255,255,255,0.18)",fontSize:"0.67rem",marginTop:"0.55rem",textAlign:"center"}}>Paste in WhatsApp · Instagram · SMS · Email</p>
         </div>
 
         {/* How it works */}
@@ -519,10 +702,7 @@ function ShareScreen({data,encoded}){
           ))}
         </div>
 
-        {/* Preview button — fixed */}
-        <PBtn onClick={openPreview} style={{marginTop:"1.2rem",width:"100%",padding:"0.88rem",fontSize:"0.95rem",animation:"none"}}>
-          👁 Preview as {data.friendName}
-        </PBtn>
+
       </div>
     </div>
   );
