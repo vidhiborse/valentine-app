@@ -93,8 +93,28 @@ function buildCSS(t){
 `;}
 
 /* ── URL encode/decode ── */
-function enc(d){try{return btoa(encodeURIComponent(JSON.stringify(d)));}catch{return null;}}
-function dec(h){try{return JSON.parse(decodeURIComponent(atob(h)));}catch{return null;}}
+function enc(d){
+  try{
+    // Compact: base64 of UTF-8 JSON — no encodeURIComponent bloat (~40% shorter URLs)
+    const json=JSON.stringify(d);
+    const bytes=new TextEncoder().encode(json);
+    let bin="";bytes.forEach(b=>bin+=String.fromCharCode(b));
+    return btoa(bin);
+  }catch{return null;}
+}
+function dec(h){
+  try{
+    // Try new compact format first
+    const bin=atob(h);
+    const bytes=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    const json=new TextDecoder().decode(bytes);
+    return JSON.parse(json);
+  }catch{
+    // Fallback: try old encodeURIComponent format (backwards compatibility)
+    try{return JSON.parse(decodeURIComponent(atob(h)));}catch{return null;}
+  }
+}
 function getHash(){const h=window.location.hash.slice(1);return h?dec(h):null;}
 
 /* ════════════════════════════════════════════════════════
