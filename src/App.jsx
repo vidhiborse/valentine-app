@@ -643,24 +643,28 @@ function SetupWizard({onComplete}){
 ════════════════════════════════════════════════════════ */
 function ShareScreen({data,encoded}){
   const [copied,setCopied]=useState(false);
+  const [toast,setToast]=useState(false);
   const url=`${window.location.origin}${window.location.pathname}#${encoded}`;
-  const domain=window.location.origin.replace("https://","").replace("http://","");
-  const hashPreview=encoded?encoded.slice(0,18)+"…["+encoded.length+" chars]":"";
-  const shortDisplay=`${domain}/#${hashPreview}`;
+
+  // Display: just show domain + short hash snippet — NEVER show full link in UI
+  const domain=window.location.origin.replace(/https?:\/\//,"");
+  const line1=domain;
+  const line2=encoded?"/#"+encoded.slice(0,12)+"…"+encoded.slice(-8)+" ("+Math.round(encoded.length/1024*10)/10+"kb)":"";
 
   function copyLink(){
     try{navigator.clipboard.writeText(url);}catch(e){
-      // fallback for older browsers
       const ta=document.createElement("textarea");
-      ta.value=url;ta.style.position="fixed";ta.style.opacity="0";
+      ta.value=url;ta.style.cssText="position:fixed;opacity:0;top:0;left:0;";
       document.body.appendChild(ta);ta.focus();ta.select();
-      document.execCommand("copy");document.body.removeChild(ta);
+      try{document.execCommand("copy");}catch{}
+      document.body.removeChild(ta);
     }
-    setCopied(true);setTimeout(()=>setCopied(false),3000);
+    setCopied(true);setToast(true);
+    setTimeout(()=>setCopied(false),3000);
+    setTimeout(()=>setToast(false),2500);
   }
 
   function openPreview(){
-    // Set hash directly — works even with very long URLs
     window.location.hash=encoded;
     window.location.reload();
   }
@@ -668,41 +672,49 @@ function ShareScreen({data,encoded}){
   return(
     <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"2rem 1.2rem",position:"relative",zIndex:1}}>
       <ThemeToggle light={false} setLight={()=>{}}/>
+
+      {/* Floating toast — appears top-center on copy */}
+      {toast&&(
+        <div style={{position:"fixed",top:"4.5rem",left:"50%",transform:"translateX(-50%)",zIndex:9999,background:"linear-gradient(135deg,#10b981,#059669)",color:"#fff",padding:"0.6rem 1.4rem",borderRadius:"50px",fontSize:"0.85rem",fontWeight:600,boxShadow:"0 4px 20px rgba(16,185,129,0.45)",animation:"fadeUp 0.3s ease",whiteSpace:"nowrap"}}>
+          ✓ Link copied to clipboard!
+        </div>
+      )}
+
       <div className="glass-deep wpad" style={{width:"100%",maxWidth:"640px",padding:"2.4rem 2.2rem",zIndex:2,textAlign:"center"}}>
         <div style={{width:"56px",height:"56px",borderRadius:"50%",background:"linear-gradient(135deg,rgba(255,107,157,0.25),rgba(168,85,247,0.2))",border:"1px solid rgba(255,107,157,0.3)",display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 1rem",fontSize:"1.4rem"}}>✓</div>
         <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(1.5rem,5vw,1.9rem)",fontWeight:700}}><GradText>Proposal Ready!</GradText></h1>
         <p style={{color:"rgba(255,255,255,0.38)",fontSize:"0.84rem",marginTop:"0.45rem",lineHeight:1.75}}>Send this to <strong style={{color:"#ffb3c8"}}>{data.friendName}</strong> — the full experience plays instantly.</p>
         {data.nickname&&<p style={{color:"rgba(255,215,0,0.5)",fontSize:"0.78rem",marginTop:"0.3rem",fontStyle:"italic"}}>"{data.nickname}"</p>}
 
-        {/* Shortened display + copy */}
-        <div className="glass-rose" style={{padding:"1.2rem 1.3rem",marginTop:"1.5rem",textAlign:"left"}}>
-          <p style={{color:"rgba(255,200,230,0.5)",fontSize:"0.67rem",marginBottom:"0.7rem",letterSpacing:"0.06em",fontWeight:600}}>SHAREABLE LINK</p>
-          {/* Clean short display — 1 line, no paragraph */}
-          <div style={{background:"rgba(0,0,0,0.25)",border:"1px solid rgba(255,107,157,0.2)",borderRadius:"10px",padding:"0.6rem 0.9rem",marginBottom:"0.75rem",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"0.5rem",overflow:"hidden"}}>
-            <span style={{color:"rgba(255,255,255,0.5)",fontSize:"0.72rem",fontFamily:"monospace",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",flex:1}}>{shortDisplay}</span>
-            <span style={{flexShrink:0,background:"rgba(255,107,157,0.15)",border:"1px solid rgba(255,107,157,0.25)",borderRadius:"6px",padding:"0.18rem 0.5rem",fontSize:"0.62rem",color:"rgba(255,107,157,0.7)",fontWeight:600,whiteSpace:"nowrap"}}>{encoded?Math.round(encoded.length/1024*10)/10+"kb":""}  </span>
+        {/* Link box — max 2 lines, no overflow */}
+        <div className="glass-rose" style={{padding:"1.1rem 1.2rem",marginTop:"1.5rem",textAlign:"left"}}>
+          <p style={{color:"rgba(255,200,230,0.5)",fontSize:"0.65rem",marginBottom:"0.6rem",letterSpacing:"0.06em",fontWeight:600}}>SHAREABLE LINK</p>
+
+          {/* 2-line link preview — strictly contained, no wrapping */}
+          <div style={{background:"rgba(0,0,0,0.22)",border:"1px solid rgba(255,107,157,0.18)",borderRadius:"10px",padding:"0.55rem 0.85rem",marginBottom:"0.7rem"}}>
+            <p style={{color:"rgba(255,255,255,0.65)",fontSize:"0.75rem",fontFamily:"monospace",fontWeight:500,lineHeight:1.5,margin:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{line1}</p>
+            <p style={{color:"rgba(255,255,255,0.3)",fontSize:"0.68rem",fontFamily:"monospace",lineHeight:1.5,margin:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{line2}</p>
           </div>
-          {/* 2-button row */}
+
+          {/* Buttons */}
           <div style={{display:"flex",gap:"0.6rem"}}>
-            <PBtn onClick={copyLink} style={{flex:1,padding:"0.72rem",fontSize:"0.88rem",animation:"none",boxShadow:"none"}}>
+            <PBtn onClick={copyLink} style={{flex:1,padding:"0.7rem",fontSize:"0.88rem",animation:"none",boxShadow:"none",background:copied?"linear-gradient(135deg,#10b981,#059669)":undefined}}>
               {copied?"✓ Copied!":"📋 Copy Link"}
             </PBtn>
-            <PBtn onClick={openPreview} style={{flex:1,padding:"0.72rem",fontSize:"0.88rem",animation:"none",background:"linear-gradient(135deg,#6b21a8,#7c3aed)",boxShadow:"none"}}>
+            <PBtn onClick={openPreview} style={{flex:1,padding:"0.7rem",fontSize:"0.88rem",animation:"none",background:"linear-gradient(135deg,#6b21a8,#7c3aed)",boxShadow:"none"}}>
               👁 Preview
             </PBtn>
           </div>
-          <p style={{color:"rgba(255,255,255,0.18)",fontSize:"0.67rem",marginTop:"0.55rem",textAlign:"center"}}>Paste in WhatsApp · Instagram · SMS · Email</p>
+          <p style={{color:"rgba(255,255,255,0.18)",fontSize:"0.65rem",marginTop:"0.45rem",textAlign:"center"}}>Paste in WhatsApp · Instagram · SMS · Email</p>
         </div>
 
         {/* How it works */}
-        <div className="glass-gold" style={{padding:"0.9rem 1.05rem",marginTop:"0.8rem",textAlign:"left"}}>
-          <p style={{color:"#ffd700",fontSize:"0.73rem",fontWeight:600,marginBottom:"0.38rem"}}>How to share</p>
-          {["Copy the link above","Open WhatsApp / Instagram / SMS","Paste and send to "+data.friendName,"They tap it — proposal opens instantly on their phone ✓"].map((s,i)=>(
-            <p key={i} style={{color:"rgba(255,255,255,0.37)",fontSize:"0.71rem",lineHeight:1.75}}><span style={{color:"#ff6b9d",marginRight:"0.3rem"}}>—</span>{s}</p>
+        <div className="glass-gold" style={{padding:"0.85rem 1rem",marginTop:"0.75rem",textAlign:"left"}}>
+          <p style={{color:"#ffd700",fontSize:"0.72rem",fontWeight:600,marginBottom:"0.35rem"}}>How to share</p>
+          {["Copy the link above","Open WhatsApp / Instagram / SMS","Paste and send to "+data.friendName,"They tap it — proposal opens instantly ✓"].map((s,i)=>(
+            <p key={i} style={{color:"rgba(255,255,255,0.37)",fontSize:"0.7rem",lineHeight:1.7}}><span style={{color:"#ff6b9d",marginRight:"0.3rem"}}>—</span>{s}</p>
           ))}
         </div>
-
-
       </div>
     </div>
   );
